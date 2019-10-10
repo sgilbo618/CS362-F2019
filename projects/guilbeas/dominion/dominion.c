@@ -1332,9 +1332,9 @@ struct gameState {
 	int outpostTurn;
 	int whoseTurn;
 	int phase;
-	int numActions; /* Starts at 1 each turn 
-int coins; /* Use as you see fit! 
-int numBuys; /* Starts at 1 each turn 
+	int numActions; // Starts at 1 each turn 
+int coins; // Use as you see fit! 
+int numBuys; // Starts at 1 each turn 
 int hand[MAX_PLAYERS][MAX_HAND];
 int handCount[MAX_PLAYERS];
 int deck[MAX_PLAYERS][MAX_DECK];
@@ -1376,7 +1376,7 @@ int baronCardEffect(struct gameState * state, int choice1, int currentPlayer)
 				state->coins += 4;//Add 4 coins to the amount of coins
 				state->discard[currentPlayer][state->discardCount[currentPlayer]] = state->hand[currentPlayer][p];
 				state->discardCount[currentPlayer]++;
-				for (p < state->handCount[currentPlayer]; p++) {
+				for (;  p < state->handCount[currentPlayer]; p++) {
 					state->hand[currentPlayer][p] = state->hand[currentPlayer][p + 1];
 				}
 				state->hand[currentPlayer][state->handCount[currentPlayer]] = -1;
