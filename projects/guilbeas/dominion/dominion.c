@@ -889,57 +889,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
         return 0;
 
     case baron:
-        state->numBuys++;//Increase buys by 1!
-        if (choice1 > 0) { //Boolean true or going to discard an estate
-            int p = 0;//Iterator for hand!
-            int card_not_discarded = 1;//Flag for discard set!
-            while(card_not_discarded) {
-                if (state->hand[currentPlayer][p] == estate) { //Found an estate card!
-                    state->coins += 4;//Add 4 coins to the amount of coins
-                    state->discard[currentPlayer][state->discardCount[currentPlayer]] = state->hand[currentPlayer][p];
-                    state->discardCount[currentPlayer]++;
-                    for (; p < state->handCount[currentPlayer]; p++) {
-                        state->hand[currentPlayer][p] = state->hand[currentPlayer][p+1];
-                    }
-                    state->hand[currentPlayer][state->handCount[currentPlayer]] = -1;
-                    state->handCount[currentPlayer]--;
-                    card_not_discarded = 0;//Exit the loop
-                }
-                else if (p > state->handCount[currentPlayer]) {
-                    if(DEBUG) {
-                        printf("No estate cards in your hand, invalid choice\n");
-                        printf("Must gain an estate if there are any\n");
-                    }
-                    if (supplyCount(estate, state) > 0) {
-                        gainCard(estate, state, 0, currentPlayer);
-
-                        state->supplyCount[estate]--;//Decrement estates
-                        if (supplyCount(estate, state) == 0) {
-                            isGameOver(state);
-                        }
-                    }
-                    card_not_discarded = 0;//Exit the loop
-                }
-
-                else {
-                    p++;//Next card
-                }
-            }
-        }
-
-        else {
-            if (supplyCount(estate, state) > 0) {
-                gainCard(estate, state, 0, currentPlayer);//Gain an estate
-
-                state->supplyCount[estate]--;//Decrement Estates
-                if (supplyCount(estate, state) == 0) {
-                    isGameOver(state);
-                }
-            }
-        }
-
-
-        return 0;
+		return baronCardEffect(state, choice1, currentPlayer);
 
     case great_hall:
         //+1 Card
@@ -1369,5 +1319,104 @@ int updateCoins(int player, struct gameState *state, int bonus)
 }
 
 
-//end of dominion.c
 
+/*********************************************************************************************************************
+                                    Refactored Cards
+*********************************************************************************************************************/
+/*
+struct gameState {
+	int numPlayers; //number of players
+	int supplyCount[treasure_map+1];  //this is the amount of a specific type of card given a specific number.
+	int embargoTokens[treasure_map+1];
+	int outpostPlayed;
+	int outpostTurn;
+	int whoseTurn;
+	int phase;
+	int numActions; /* Starts at 1 each turn 
+int coins; /* Use as you see fit! 
+int numBuys; /* Starts at 1 each turn 
+int hand[MAX_PLAYERS][MAX_HAND];
+int handCount[MAX_PLAYERS];
+int deck[MAX_PLAYERS][MAX_DECK];
+int deckCount[MAX_PLAYERS];
+int discard[MAX_PLAYERS][MAX_DECK];
+int discardCount[MAX_PLAYERS];
+int playedCards[MAX_DECK];
+int playedCardCount;
+};
+
+int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState *state, int handPos, int *bonus)
+{
+	int i;
+	int j;
+	int k;
+	int x;
+	int index;
+	int currentPlayer = whoseTurn(state);
+	int nextPlayer = currentPlayer + 1;
+
+	int tributeRevealedCards[2] = {-1, -1};
+	int temphand[MAX_HAND];// moved above the if statement
+	int drawntreasure=0;
+	int cardDrawn;
+	int z = 0;// this is the counter for the temp hand
+	if (nextPlayer > (state->numPlayers - 1)) {
+		nextPlayer = 0;
+	}
+*/
+
+int baronCardEffect(struct gameState * state, int choice1, int currentPlayer)
+{
+	state->numBuys++;//Increase buys by 1!
+	if (choice1 > 0) { //Boolean true or going to discard an estate
+		int p = 0;//Iterator for hand!
+		int card_not_discarded = 1;//Flag for discard set!
+		while (card_not_discarded) {
+			if (state->hand[currentPlayer][p] == estate) { //Found an estate card!
+				state->coins += 4;//Add 4 coins to the amount of coins
+				state->discard[currentPlayer][state->discardCount[currentPlayer]] = state->hand[currentPlayer][p];
+				state->discardCount[currentPlayer]++;
+				for (p < state->handCount[currentPlayer]; p++) {
+					state->hand[currentPlayer][p] = state->hand[currentPlayer][p + 1];
+				}
+				state->hand[currentPlayer][state->handCount[currentPlayer]] = -1;
+				state->handCount[currentPlayer]--;
+				card_not_discarded = 0;//Exit the loop
+			}
+			else if (p > state->handCount[currentPlayer]) {
+				if (DEBUG) {
+					printf("No estate cards in your hand, invalid choice\n");
+					printf("Must gain an estate if there are any\n");
+				}
+				if (supplyCount(estate, state) > 0) {
+					gainCard(estate, state, 0, currentPlayer);
+
+					state->supplyCount[estate]--;//Decrement estates
+					if (supplyCount(estate, state) == 0) {
+						isGameOver(state);
+					}
+				}
+				card_not_discarded = 0;//Exit the loop
+			}
+
+			else {
+				p++;//Next card
+			}
+		}
+	}
+
+	else {
+		if (supplyCount(estate, state) > 0) {
+			gainCard(estate, state, 0, currentPlayer);//Gain an estate
+
+			state->supplyCount[estate]--;//Decrement Estates
+			if (supplyCount(estate, state) == 0) {
+				isGameOver(state);
+			}
+		}
+	}
+	return 0;
+}
+
+
+//end of dominion.c

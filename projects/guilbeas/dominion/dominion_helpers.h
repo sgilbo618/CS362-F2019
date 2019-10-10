@@ -12,4 +12,6 @@ int getCost(int cardNumber);
 int cardEffect(int card, int choice1, int choice2, int choice3,
                struct gameState *state, int handPos, int *bonus);
 
+int baronCardEffect(struct gameState *state, int choice1);
+
 #endif
