@@ -1332,9 +1332,9 @@ struct gameState {
 	int outpostTurn;
 	int whoseTurn;
 	int phase;
-	int numActions; /* Starts at 1 each turn 
-int coins; /* Use as you see fit! 
-int numBuys; /* Starts at 1 each turn 
+	int numActions; // Starts at 1 each turn 
+int coins; // Use as you see fit! 
+int numBuys; // Starts at 1 each turn 
 int hand[MAX_PLAYERS][MAX_HAND];
 int handCount[MAX_PLAYERS];
 int deck[MAX_PLAYERS][MAX_DECK];
