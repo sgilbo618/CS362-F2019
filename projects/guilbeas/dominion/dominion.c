@@ -1391,13 +1391,13 @@ int minionCardEffect(struct gameState *state, int choice1, int choice2, int curr
 		}
 
 		//draw 4
-		for (i = 0; i < 4; i++)
+		for (int i = 0; i < 4; i++)
 		{
 			drawCard(currentPlayer, state);
 		}
 
 		//other players discard hand and redraw if hand size > 4
-		for (i = 0; i < state->numPlayers; i++)
+		for (int i = 0; i < state->numPlayers; i++)
 		{
 			if (i != currentPlayer)
 			{
@@ -1410,7 +1410,7 @@ int minionCardEffect(struct gameState *state, int choice1, int choice2, int curr
 					}
 
 					//draw 4
-					for (j = 0; j < 4; j++)
+					for (int j = 0; j < 4; j++)
 					{
 						drawCard(i, state);
 					}
