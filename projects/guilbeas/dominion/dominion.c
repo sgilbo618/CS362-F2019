@@ -1308,14 +1308,15 @@ int ambassadorCardEffect(struct gameState *state, int choice1, int choice2, int 
 	//each other player gains a copy of revealed card
 	for (int i = 0; i < state->numPlayers; i++)
 	{
-		if (i != currentPlayer)
-		{
+		//if (i != currentPlayer)
+		//{
 			gainCard(state->hand[currentPlayer][choice1], state, 0, i);
-		}
+		//}
 	}
 
 	//discard played card from hand
-	discardCard(handPos, currentPlayer, state, 0);
+	//discardCard(handPos, currentPlayer, state, 0);
+	discardCard(handPos, currentPlayer, state, 1);
 
 	//trash copies of cards returned to supply
 	for (int j = 0; j < choice2; j++)
