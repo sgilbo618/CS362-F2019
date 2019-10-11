@@ -1176,50 +1176,68 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 
 int baronCardEffect(struct gameState * state, int choice1, int currentPlayer)
 {
-	state->numBuys++;//Increase buys by 1!
-	if (choice1 > 0) { //Boolean true or going to discard an estate
-		int p = 0;//Iterator for hand!
-		int card_not_discarded = 1;//Flag for discard set!
-		while (card_not_discarded) {
-			if (state->hand[currentPlayer][p] == estate) { //Found an estate card!
-				state->coins += 4;//Add 4 coins to the amount of coins
+	state->numBuys++; //Increase buys by 1
+
+	if (choice1 > 0) //Boolean true or going to discard an estate
+	{ 
+		int p = 0; //Iterator for hand
+		int card_not_discarded = 1; //Flag for discard set
+
+		while (card_not_discarded) 
+		{
+			if (state->hand[currentPlayer][p] == estate) //Found an estate card
+			{ 
+				state->coins += 4; //Add 4 coins to the amount of coins
 				state->discard[currentPlayer][state->discardCount[currentPlayer]] = state->hand[currentPlayer][p];
 				state->discardCount[currentPlayer]++;
-				for (;  p < state->handCount[currentPlayer]; p++) {
+
+				for (;  p < state->handCount[currentPlayer]; p++) 
+				{
 					state->hand[currentPlayer][p] = state->hand[currentPlayer][p + 1];
 				}
+
 				state->hand[currentPlayer][state->handCount[currentPlayer]] = -1;
 				state->handCount[currentPlayer]--;
 				card_not_discarded = 0;//Exit the loop
 			}
-			else if (p > state->handCount[currentPlayer]) {
-				if (DEBUG) {
+
+			else if (p > state->handCount[currentPlayer]) 
+			{
+				if (DEBUG) 
+				{
 					printf("No estate cards in your hand, invalid choice\n");
 					printf("Must gain an estate if there are any\n");
 				}
-				if (supplyCount(estate, state) > 0) {
-					gainCard(estate, state, 0, currentPlayer);
 
-					state->supplyCount[estate]--;//Decrement estates
-					if (supplyCount(estate, state) == 0) {
+				if (supplyCount(estate, state) > 0)
+				{
+					gainCard(estate, state, 0, currentPlayer);
+					state->supplyCount[estate]--; // Decrement estates
+
+					if (supplyCount(estate, state) == 0)
+					{
 						isGameOver(state);
 					}
 				}
-				card_not_discarded = 0;//Exit the loop
+				card_not_discarded = 0; //Exit the loop
 			}
 
-			else {
-				p++;//Next card
+			else 
+			{
+				p++; //Next card
 			}
 		}
 	}
 
-	else {
-		if (supplyCount(estate, state) > 0) {
-			gainCard(estate, state, 0, currentPlayer);//Gain an estate
+	else 
+	{
+		if (supplyCount(estate, state) > 0)
+		{
+			gainCard(estate, state, 0, currentPlayer);
+			state->supplyCount[estate]--; // Decrement estates
 
-			state->supplyCount[estate]--;//Decrement Estates
-			if (supplyCount(estate, state) == 0) {
+			if (supplyCount(estate, state) == 0)
+			{
 				isGameOver(state);
 			}
 		}
@@ -1227,18 +1245,17 @@ int baronCardEffect(struct gameState * state, int choice1, int currentPlayer)
 	return 0;
 }
 
-int minionCardEffect(struct gameState *state, int choice1, int choice2, int currentPlayer, int handPos) {
-	//+1 action
-	state->numActions++;
+int minionCardEffect(struct gameState *state, int choice1, int choice2, int currentPlayer, int handPos) 
+{
+	state->numActions++; //+1 action
 
-	//discard card from hand
-	discardCard(handPos, currentPlayer, state, 0);
+	discardCard(handPos, currentPlayer, state, 0); //discard card from hand
 
 	if (choice1)
 	{
 		state->coins = state->coins + 2;
 	}
-	else if (choice2)		//discard hand, redraw 4, other players with 5+ cards discard hand and draw 4
+	else if (choice2) //discard hand, redraw 4, other players with 5+ cards discard hand and draw 4
 	{
 		//discard hand
 		while (numHandCards(state) > 0)
@@ -1278,7 +1295,8 @@ int minionCardEffect(struct gameState *state, int choice1, int choice2, int curr
 	return 0;
 }
 
-int ambassadorCardEffect(struct gameState *state, int choice1, int choice2, int handPos, int currentPlayer) {
+int ambassadorCardEffect(struct gameState *state, int choice1, int choice2, int handPos, int currentPlayer) 
+{
 	int j = 0;		//used to check if player has enough cards to discard
 
 	if (choice2 > 2 || choice2 < 0)
@@ -1337,19 +1355,25 @@ int ambassadorCardEffect(struct gameState *state, int choice1, int choice2, int 
 	return 0;
 }
 
-int tributeCardEffect(struct gameState *state, int currentPlayer) {
+int tributeCardEffect(struct gameState *state, int currentPlayer) 
+{
 	int nextPlayer = whoseTurn(state) + 1;
 	int tributeRevealedCards[2] = { -1, -1 };
-	if ((state->discardCount[nextPlayer] + state->deckCount[nextPlayer]) <= 1) {
-		if (state->deckCount[nextPlayer] > 0) {
+
+	if ((state->discardCount[nextPlayer] + state->deckCount[nextPlayer]) <= 1) 
+	{
+		if (state->deckCount[nextPlayer] > 0) 
+		{
 			tributeRevealedCards[0] = state->deck[nextPlayer][state->deckCount[nextPlayer] - 1];
 			state->deckCount[nextPlayer]--;
 		}
-		else if (state->discardCount[nextPlayer] > 0) {
+		else if (state->discardCount[nextPlayer] > 0) 
+		{
 			tributeRevealedCards[0] = state->discard[nextPlayer][state->discardCount[nextPlayer] - 1];
 			state->discardCount[nextPlayer]--;
 		}
-		else {
+		else 
+		{
 			//No Card to Reveal
 			if (DEBUG) {
 				printf("No cards to reveal\n");
@@ -1357,9 +1381,12 @@ int tributeCardEffect(struct gameState *state, int currentPlayer) {
 		}
 	}
 
-	else {
-		if (state->deckCount[nextPlayer] == 0) {
-			for (int i = 0; i < state->discardCount[nextPlayer]; i++) {
+	else 
+	{
+		if (state->deckCount[nextPlayer] == 0) 
+		{
+			for (int i = 0; i < state->discardCount[nextPlayer]; i++) 
+			{
 				state->deck[nextPlayer][i] = state->discard[nextPlayer][i];//Move to deck
 				state->deckCount[nextPlayer]++;
 
@@ -1369,30 +1396,40 @@ int tributeCardEffect(struct gameState *state, int currentPlayer) {
 
 			shuffle(nextPlayer, state);//Shuffle the deck
 		}
+
 		tributeRevealedCards[0] = state->deck[nextPlayer][state->deckCount[nextPlayer] - 1];
 		state->deck[nextPlayer][state->deckCount[nextPlayer]--] = -1;
 		state->deckCount[nextPlayer]--;
+
 		tributeRevealedCards[1] = state->deck[nextPlayer][state->deckCount[nextPlayer] - 1];
 		state->deck[nextPlayer][state->deckCount[nextPlayer]--] = -1;
 		state->deckCount[nextPlayer]--;
 	}
 
-	if (tributeRevealedCards[0] == tributeRevealedCards[1]) { //If we have a duplicate card, just drop one
+	if (tributeRevealedCards[0] == tributeRevealedCards[1]) //If we have a duplicate card, just drop one
+	{ 
 		state->playedCards[state->playedCardCount] = tributeRevealedCards[1];
 		state->playedCardCount++;
 		tributeRevealedCards[1] = -1;
 	}
 
-	for (int i = 0; i <= 2; i++) {
-		if (tributeRevealedCards[i] == copper || tributeRevealedCards[i] == silver || tributeRevealedCards[i] == gold) { //Treasure cards
+	for (int i = 0; i <= 2; i++) 
+	{
+		//Treasure cards
+		if (tributeRevealedCards[i] == copper || tributeRevealedCards[i] == silver || tributeRevealedCards[i] == gold) 
+		{ 
 			state->coins += 2;
 		}
-
-		else if (tributeRevealedCards[i] == estate || tributeRevealedCards[i] == duchy || tributeRevealedCards[i] == province || tributeRevealedCards[i] == gardens || tributeRevealedCards[i] == great_hall) { //Victory Card Found
+		//Victory Card Found
+		else if (tributeRevealedCards[i] == estate || tributeRevealedCards[i] == duchy || tributeRevealedCards[i] == province 
+			|| tributeRevealedCards[i] == gardens || tributeRevealedCards[i] == great_hall) 
+		{ 
 			drawCard(currentPlayer, state);
 			drawCard(currentPlayer, state);
 		}
-		else { //Action Card
+		//Action Card
+		else 
+		{ 
 			state->numActions = state->numActions + 2;
 		}
 	}
@@ -1400,7 +1437,8 @@ int tributeCardEffect(struct gameState *state, int currentPlayer) {
 	return 0;
 }
 
-int mineCardEffect(struct gameState *state, int currentPlayer, int choice1, int choice2, int handPos) {
+int mineCardEffect(struct gameState *state, int currentPlayer, int choice1, int choice2, int handPos) 
+{
 	int j = state->hand[currentPlayer][choice1];  //store card we will trash
 
 	if (state->hand[currentPlayer][choice1] < copper || state->hand[currentPlayer][choice1] > gold)
@@ -1435,5 +1473,3 @@ int mineCardEffect(struct gameState *state, int currentPlayer, int choice1, int 
 
 	return 0;
 }
-
-//end of dominion.c
