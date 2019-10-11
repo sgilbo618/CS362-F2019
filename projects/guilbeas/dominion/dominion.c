@@ -929,7 +929,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
         return 0;
 
     case tribute:
-		return tributeCardEffect(state);
+		return tributeCardEffect(state, currentPlayer);
 
     case ambassador:
 		return ambassadorCardEffect(state, choice1, choice2, handPos, currentPlayer);
@@ -1370,7 +1370,7 @@ int ambassadorCardEffect(struct gameState *state, int choice1, int choice2, int 
 	return 0;
 }
 
-int tributeCardEffect(struct gameState *state) {
+int tributeCardEffect(struct gameState *state, int currentPlayer) {
 	int nextPlayer = whoseTurn(state) + 1;
 	int tributeRevealedCards[2] = { -1, -1 };
 	if ((state->discardCount[nextPlayer] + state->deckCount[nextPlayer]) <= 1) {
