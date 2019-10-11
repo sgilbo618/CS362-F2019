@@ -806,7 +806,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
         return -1;
 
     case mine:
-		return mineCardEffect(state, currentPlayer, choice1, choice2);
+		return mineCardEffect(state, currentPlayer, choice1, choice2, handPos);
 
     case remodel:
         j = state->hand[currentPlayer][choice1];  //store card we will trash
@@ -1400,7 +1400,7 @@ int tributeCardEffect(struct gameState *state, int currentPlayer) {
 	return 0;
 }
 
-int mineCardEffect(struct gameState *state, int currentPlayer, int choice1, int choice2) {
+int mineCardEffect(struct gameState *state, int currentPlayer, int choice1, int choice2, int handPos) {
 	int j = state->hand[currentPlayer][choice1];  //store card we will trash
 
 	if (state->hand[currentPlayer][choice1] < copper || state->hand[currentPlayer][choice1] > gold)
