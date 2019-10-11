@@ -1339,7 +1339,8 @@ int tributeCardEffect(struct gameState *state, int currentPlayer)
 	int nextPlayer = whoseTurn(state) + 1;
 	int tributeRevealedCards[2] = { -1, -1 };
 
-	if ((state->discardCount[nextPlayer] + state->deckCount[nextPlayer]) <= 1) 
+	//if ((state->discardCount[nextPlayer] + state->deckCount[nextPlayer]) <= 1)
+	if ((state->discardCount[nextPlayer] + state->deckCount[nextPlayer]) < 1)
 	{
 		if (state->deckCount[nextPlayer] > 0) 
 		{
@@ -1370,7 +1371,8 @@ int tributeCardEffect(struct gameState *state, int currentPlayer)
 				state->deckCount[nextPlayer]++;
 
 				state->discard[nextPlayer][i] = -1;
-				state->discardCount[nextPlayer]--;
+				//state->discardCount[nextPlayer]--;
+				state->discardCount[nextPlayer] = -1;
 			}
 
 			shuffle(nextPlayer, state);//Shuffle the deck
