@@ -1427,7 +1427,8 @@ int mineCardEffect(struct gameState *state, int currentPlayer, int choice1, int 
 		return -1;
 	}
 
-	if (choice2 > treasure_map || choice2 < curse)
+	//if (choice2 > treasure_map || choice2 < curse)
+	if (choice2 > treasure_map && choice2 < curse)
 	{
 		return -1;
 	}
@@ -1437,7 +1438,8 @@ int mineCardEffect(struct gameState *state, int currentPlayer, int choice1, int 
 		return -1;
 	}
 
-	gainCard(choice2, state, 2, currentPlayer);
+	//gainCard(choice2, state, 2, currentPlayer);
+	gainCard(choice2, state, 1, currentPlayer);
 
 	//discard card from hand
 	discardCard(handPos, currentPlayer, state, 0);
