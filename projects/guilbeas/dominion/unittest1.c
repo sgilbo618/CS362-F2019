@@ -71,9 +71,8 @@ int main()
 	G.hand[currentPlayer][0] = estate;  // make sure player has an estate to play
 	G.hand[currentPlayer][1] = gold;  // make sure card to replace estate in hand is a card that could not be there yet
 	coinsBefore = G.coins;  // track coins before playing estate
-	discardCountBefore = 1;  // track discarded count, start at one for copper below
-	G.discard[currentPlayer][discardCountBefore - 1] = copper;  // make sure last discarded card was not estate
-	int shiftedCard = G.hand[currentPlayer][1];  // make sure card that will take over the estate space is a card that cannot be in play yet
+	discardCountBefore = G.discardCount[currentPlayer];  // track discard pile count
+	G.discard[currentPlayer][0] = -1;  // make sure discard pile has no value
 	int handCountBefore = G.handCount[currentPlayer];  // track how many cards in player's hand
 
 	// call function
@@ -92,8 +91,8 @@ int main()
 	MY_ASSERT(G.discard[currentPlayer][G.discardCount[currentPlayer] - 1] == estate);
 
 	// the hand is shifted to fill in where estate card was
-	printf("\nestate card position filled with: %d, expected: %d\n", G.hand[currentPlayer][0], shiftedCard);
-	MY_ASSERT(G.hand[currentPlayer][0] == shiftedCard);
+	printf("\nestate card position filled with: %d, expected: %d\n", G.hand[currentPlayer][0], gold);
+	MY_ASSERT(G.hand[currentPlayer][0] == gold);
 
 	// the hand has one less card
 	printf("\nhand count: %d, expected: %d\n", G.handCount[currentPlayer], handCountBefore - 1);
