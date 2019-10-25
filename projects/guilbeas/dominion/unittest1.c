@@ -29,6 +29,7 @@ int main()
 	int coinsBefore = -1;
 	int supplyCountBefore = -1;
 	int discardCountBefore = -1;
+	int numBuysBefore = -1;
 
 	// set card array
 	int k[10] = { tribute, council_room, feast, gardens, mine,
@@ -44,23 +45,7 @@ int main()
 
 	/***************************************** TEST 1 ****************************************/
 	printf("\n********************************************************************************\n");
-	printf("* Test 1: Number of buys increases by one\n");
-	printf("********************************************************************************\n");
-
-	// set variables for this test
-	choice1 = 0; // choice is irrelevent for this test
-	int numBuysBefore = G.numBuys;
-
-	// test function
-	baronCardEffect(&G, choice1, currentPlayer);
-
-	printf("\nbuy count: %d, expected: %d\n", G.numBuys, numBuysBefore + 1);
-	MY_ASSERT(G.numBuys == numBuysBefore + 1);
-
-
-	/***************************************** TEST 2 ****************************************/
-	printf("\n********************************************************************************\n");
-	printf("* Test 2: Choice = 1 and player has an estate card\n");
+	printf("* Test 1: Choice = 1 and player has an estate card\n");
 	printf("********************************************************************************\n");
 
 	memset(&G, 23, sizeof(struct gameState)); // clear game
@@ -68,6 +53,7 @@ int main()
 
 	// set variables for this test
 	choice1 = 1;  // play estate for coins
+	numBuysBefore = G.numBuys;  // track number of buys
 	G.hand[currentPlayer][0] = estate;  // make sure player has an estate to play
 	G.hand[currentPlayer][1] = gold;  // make sure card to replace estate in hand is a card that could not be there yet
 	coinsBefore = G.coins;  // track coins before playing estate
@@ -77,6 +63,10 @@ int main()
 
 	// call function
 	baronCardEffect(&G, choice1, currentPlayer);
+
+	// 1 buy is added
+	printf("\nbuy count: %d, expected: %d\n", G.numBuys, numBuysBefore + 1);
+	MY_ASSERT(G.numBuys == numBuysBefore + 1);
 
 	// 4 coins are added
 	printf("\ncoin count: %d, expected: %d\n", G.coins, coinsBefore + 4);
@@ -103,9 +93,9 @@ int main()
 	MY_ASSERT(G.hand[currentPlayer][G.handCount[currentPlayer]] == -1);
 
 
-	/***************************************** TEST 3 ****************************************/
+	/***************************************** TEST 2 ****************************************/
 	printf("\n********************************************************************************\n");
-	printf("* Test 3: Choice = 1 and player does not have an estate card\n");
+	printf("* Test 2: Choice = 1 and player does not have an estate card\n");
 	printf("********************************************************************************\n");
 
 	memset(&G, 23, sizeof(struct gameState)); // clear game
@@ -143,9 +133,9 @@ int main()
 	MY_ASSERT(G.discard[currentPlayer][0] == estate);
 
 
-	/***************************************** TEST 4 ****************************************/
+	/***************************************** TEST 3 ****************************************/
 	printf("\n********************************************************************************\n");
-	printf("* Test 4: Choice = 0\n");
+	printf("* Test 3: Choice = 0\n");
 	printf("********************************************************************************\n");
 
 	memset(&G, 23, sizeof(struct gameState)); // clear game
@@ -153,6 +143,7 @@ int main()
 
 	// set variables for this test
 	choice1 = 0;
+	numBuysBefore = G.numBuys;  // track number of buys
 	G.hand[currentPlayer][0] = estate;  // make sure player has an estate
 	coinsBefore = G.coins;  // track coin count
 	supplyCountBefore = G.supplyCount[estate];  // track supply count for estate
@@ -161,6 +152,10 @@ int main()
 
 	// call function
 	baronCardEffect(&G, choice1, currentPlayer);
+
+	// 1 buy is added
+	printf("\nbuy count: %d, expected: %d\n", G.numBuys, numBuysBefore + 1);
+	MY_ASSERT(G.numBuys == numBuysBefore + 1);
 
 	// coins stay the same
 	printf("\ncoin count: %d, expected: %d\n", G.coins, coinsBefore);
