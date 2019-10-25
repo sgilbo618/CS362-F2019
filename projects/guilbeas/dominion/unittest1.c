@@ -68,7 +68,8 @@ int main()
 
 	// set variables for this test
 	choice1 = 1;  // play estate for coins
-	G.hand[currentPlayer][0] == estate;  // make sure player has an estate to play
+	G.hand[currentPlayer][0] = estate;  // make sure player has an estate to play
+	G.hand[currentPlayer][1] = gold;  // make sure card to replace estate in hand is a card that could not be there yet
 	coinsBefore = G.coins;  // track coins before playing estate
 	discardCountBefore = 1;  // track discarded count, start at one for copper below
 	G.discard[currentPlayer][discardCountBefore - 1] = copper;  // make sure last discarded card was not estate
