@@ -3,9 +3,10 @@
 * Date: 10-27-2019
 * Sources: cardtest4.c example from Module 4 and testUpdateCoins.c from Module 3
 * Description: Contains unit tests for ambassadorCardEffect().
-*	Test 1:
-*	Test 2:
-*	Test 3:
+*	Test 1: Choose to reveal a Smithy and return 0 to supply
+*	Test 2: Choose to reveal village and return 2 to the supply
+*	Test 3: Error check - can't return > 2
+*	Test 4: Error check - can't choose played card as revealed card
 *******************************************************************************/
 
 #include "dominion.h"
@@ -33,6 +34,7 @@ int main()
 	int otherPlayerDiscard = -1;
 	int discardCountBefore = -1;
 	int handCountBefore = -1;
+	int errorCheck = 10;
 
 	// set card array
 	int k[10] = { tribute, ambassador, feast, gardens, mine,
@@ -136,6 +138,53 @@ int main()
 	printf(" - current player discard count: %d, expected: %d\n", G.discardCount[currentPlayer], discardCountBefore + 1);
 	MY_ASSERT(G.discardCount[currentPlayer] == discardCountBefore + 1);
 
+	/***************************************** TEST 3 ****************************************/
+	printf("\n********************************************************************************\n");
+	printf("* Test 3: Error check - can't return > 2\n");
+	printf("********************************************************************************\n");
+
+	memset(&G, 23, sizeof(struct gameState)); // clear game
+	initializeGame(numPlayer, k, seed, &G);  // init new game
+
+	// set variables for this test
+	revealedCard = mine;  // set test card to be mine
+	G.hand[currentPlayer][2] = revealedCard;  // make sure player has 3 of the revealed card
+	G.hand[currentPlayer][3] = revealedCard;
+	G.hand[currentPlayer][4] = revealedCard;
+	choice1 = 2;  // set to be where the mine card is
+	choice2 = 3;  // choosing to return 2 copies of mine
+	G.hand[currentPlayer][1] = ambassador;  // make sure player has ambassador card
+	handPos = 1;  // set position of ambassador card
+
+	// call function
+	errorCheck = ambassadorCardEffect(&G, choice1, choice2, handPos, currentPlayer);
+
+	printf("- error check returns: %d, expected: -1\n", errorCheck);
+	MY_ASSERT(errorCheck == -1);
+
+
+	/***************************************** TEST 4 ****************************************/
+	printf("\n********************************************************************************\n");
+	printf("* Test 4: Error check - can't choose played card as revealed card\n");
+	printf("********************************************************************************\n");
+
+	memset(&G, 23, sizeof(struct gameState)); // clear game
+	initializeGame(numPlayer, k, seed, &G);  // init new game
+
+	// set variables for this test
+	revealedCard = ambassador;  // set test card to be ambassador
+	G.hand[currentPlayer][1] = revealedCard;  // make sure player has 3 ambassador cards
+	G.hand[currentPlayer][2] = revealedCard;
+	G.hand[currentPlayer][3] = revealedCard;
+	choice1 = 1;  // set to be where an ambassador card is
+	choice2 = 2;  // choosing to return 2 copies of ambassador
+	handPos = 1;  // set position of ambassador card
+
+	// call function
+	errorCheck = ambassadorCardEffect(&G, choice1, choice2, handPos, currentPlayer);
+
+	printf("- error check returns: %d, expected: -1\n", errorCheck);
+	MY_ASSERT(errorCheck == -1);
 
 	printf("\nFinished testing Ambassador Card Effects\n");
 	return 0;
