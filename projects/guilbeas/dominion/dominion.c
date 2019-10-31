@@ -1354,12 +1354,12 @@ int tributeCardEffect(struct gameState *state, int currentPlayer)
 	//if ((state->discardCount[nextPlayer] + state->deckCount[nextPlayer]) <= 1)
 	if ((state->discardCount[nextPlayer] + state->deckCount[nextPlayer]) < 1)
 	{
-		if (state->deckCount[nextPlayer] > 0) 
+		if (state->deckCount[nextPlayer] > 0)
 		{
 			tributeRevealedCards[0] = state->deck[nextPlayer][state->deckCount[nextPlayer] - 1];
 			state->deckCount[nextPlayer]--;
 		}
-		else if (state->discardCount[nextPlayer] > 0) 
+		else if (state->discardCount[nextPlayer] > 0)
 		{
 			tributeRevealedCards[0] = state->discard[nextPlayer][state->discardCount[nextPlayer] - 1];
 			state->discardCount[nextPlayer]--;
@@ -1373,18 +1373,18 @@ int tributeCardEffect(struct gameState *state, int currentPlayer)
 		}
 	}
 
-	else 
+	else
 	{
-		if (state->deckCount[nextPlayer] == 0) 
+		if (state->deckCount[nextPlayer] == 0)
 		{
-			for (int i = 0; i < state->discardCount[nextPlayer]; i++) 
+			for (int i = 0; i < state->discardCount[nextPlayer]; i++)
 			{
 				state->deck[nextPlayer][i] = state->discard[nextPlayer][i];//Move to deck
 				state->deckCount[nextPlayer]++;
 
 				state->discard[nextPlayer][i] = -1;
 				//state->discardCount[nextPlayer]--;
-				state->discardCount[nextPlayer] = -1;
+				state->discardCount[nextPlayer] = -1; 
 			}
 
 			shuffle(nextPlayer, state);//Shuffle the deck
@@ -1399,14 +1399,14 @@ int tributeCardEffect(struct gameState *state, int currentPlayer)
 		state->deckCount[nextPlayer]--;
 	}
 
-	if (tributeRevealedCards[0] == tributeRevealedCards[1]) //If we have a duplicate card, just drop one
+	if (tributeRevealedCards[0] == tributeRevealedCards[1])
 	{ 
 		state->playedCards[state->playedCardCount] = tributeRevealedCards[1];
 		state->playedCardCount++;
 		tributeRevealedCards[1] = -1;
 	}
 
-	for (int i = 0; i <= 2; i++) 
+	for (int i = 0; i <= 2; i++)
 	{
 		//Treasure cards
 		if (tributeRevealedCards[i] == copper || tributeRevealedCards[i] == silver || tributeRevealedCards[i] == gold) 
