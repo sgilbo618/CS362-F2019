@@ -1445,7 +1445,8 @@ int mineCardEffect(struct gameState *state, int currentPlayer, int choice1, int 
 		return -1;
 	}
 
-	if ((getCost(state->hand[currentPlayer][choice1]) + 3) > getCost(choice2))
+	//if ((getCost(state->hand[currentPlayer][choice1]) + 3) > getCost(choice2))
+	if ((getCost(state->hand[currentPlayer][choice1]) + 3) < getCost(choice2))
 	{
 		return -1;
 	}
