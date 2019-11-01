@@ -2,7 +2,7 @@
 * Name: Samantha Guilbeault
 * Date: 10-31-2019
 * Sources: cardtest4.c example from Module 4 and testUpdateCoins.c from Module 3
-* Description: Contains unit tests for ambassadorCardEffect().
+* Description: Contains unit tests for tributeCardEffect().
 *	Test 1: Next player has 0 cards total to reveal
 *	Test 2: Next player has 1 treasure card in deck, 0 cards in discard
 *	Test 3: Next player has 2 different cards in discard, but 0 in deck
