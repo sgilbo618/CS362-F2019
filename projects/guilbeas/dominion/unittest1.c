@@ -2,8 +2,8 @@
 * Name: Samantha Guilbeault
 * Date: 10-23-2019
 * Sources: cardtest4.c example from Module 4 and testUpdateCoins.c from Module 3
-* Description: Contains unit tests for baronCardEffect().
-*	Test 1: Number of buys increases by one.
+* Description: Contains unit tests for baronCardEffect(). 
+*	Test 1: Number of buys increases by one. 
 *	Test 2: Choice = 1 (play estate) and player has an estate card in hand.
 *	Test 3: Choice = 1 and player does not have an estate card in hand.
 *	Test 4: Choice = 0 (do not play estate)
@@ -13,6 +13,7 @@
 #include "dominion_helpers.h"
 #include "rngs.h"
 #include <stdio.h>
+#include <string.h>
 
 // source: http://www.dillonbhuff.com/?p=439
 #define MY_ASSERT(x) if (!(x)) { printf("   *Assertion Failed: File %s, Line %d.\n", __FILE__, __LINE__); }
@@ -174,6 +175,6 @@ int main()
 	MY_ASSERT(G.discard[currentPlayer][0] == estate);
 
 
-	printf("\nFinished testing Baron Card Effects\n");
+	printf("\nFinished testing Baron Card Effects\n\n\n");
 	return 0;
 }

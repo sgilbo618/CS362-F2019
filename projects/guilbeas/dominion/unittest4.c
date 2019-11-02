@@ -13,6 +13,7 @@
 #include "dominion_helpers.h"
 #include "rngs.h"
 #include <stdio.h>
+#include <string.h>
 
 // source: http://www.dillonbhuff.com/?p=439
 #define MY_ASSERT(x) if (!(x)) { printf("   *Assertion Failed: File %s, Line %d.\n", __FILE__, __LINE__); }
@@ -197,6 +198,6 @@ int main()
 	MY_ASSERT(G.numActions == actionsBefore);
 
 
-	printf("\nFinished testing Tribute Card Effects\n");
+	printf("\nFinished testing Tribute Card Effects\n\n\n");
 	return 0;
 }

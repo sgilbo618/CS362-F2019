@@ -11,6 +11,7 @@
 #include "dominion_helpers.h"
 #include "rngs.h"
 #include <stdio.h>
+#include <string.h>
 
 // source: http://www.dillonbhuff.com/?p=439
 #define MY_ASSERT(x) if (!(x)) { printf("   *Assertion Failed: File %s, Line %d.\n", __FILE__, __LINE__); }
@@ -32,7 +33,6 @@ int main()
 	int otherPlayerDiscard = -1;
 	int discardCountBefore = -1;
 	int handCountBefore = -1;
-	int errorCheck = 10;
 
 	// set card array
 	int k[10] = { tribute, ambassador, feast, gardens, mine,
@@ -118,7 +118,7 @@ int main()
 
 
 	// call function
-	int result = ambassadorCardEffect(&G, choice1, choice2, handPos, currentPlayer);
+	ambassadorCardEffect(&G, choice1, choice2, handPos, currentPlayer);
 
 	// supply count of choosen card will be +2 - number of other players
 	printf("- smithy supply: %d, expected: %d\n", G.supplyCount[revealedCard], supplyCountBefore + choice2 - (numPlayer - 1));
@@ -136,6 +136,6 @@ int main()
 	printf(" - current player discard count: %d, expected: %d\n", G.discardCount[currentPlayer], discardCountBefore + 1);
 	MY_ASSERT(G.discardCount[currentPlayer] == discardCountBefore + 1);
 
-	printf("\nFinished testing Ambassador Card Effects\n");
+	printf("\nFinished testing Ambassador Card Effects\n\n\n");
 	return 0;
 }
