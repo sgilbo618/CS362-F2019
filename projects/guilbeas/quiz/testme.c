@@ -1,3 +1,9 @@
+/*
+Name: Samantha Guilbeault
+Date: 11-4-19
+Description: Random Tester Quiz
+*/
+
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
