@@ -3,10 +3,9 @@
 * Date: 10-23-2019
 * Sources: cardtest4.c example from Module 4 and testUpdateCoins.c from Module 3
 * Description: Contains unit tests for baronCardEffect(). 
-*	Test 1: Number of buys increases by one. 
-*	Test 2: Choice = 1 (play estate) and player has an estate card in hand.
-*	Test 3: Choice = 1 and player does not have an estate card in hand.
-*	Test 4: Choice = 0 (do not play estate)
+*	Test 1: Choice = 1 (play estate) and player has an estate card in hand.
+*	Test 2: Choice = 1 and player does not have an estate card in hand.
+*	Test 3: Choice = 0 (do not play estate)
 *******************************************************************************/
 
 #include "dominion.h"
