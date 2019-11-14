@@ -13,10 +13,10 @@
 #include <math.h>
 
 // source: http://www.dillonbhuff.com/?p=439
-#define MY_ASSERT(x, y) if (!(x)) { printf("   *Assertion Failed - %s\n", y); }
+#define MY_ASSERT(x, y, z) if (!(x)) { printf("   *Assertion Failed: Test %d - %s\n", z, y); }
 
 
-void checkBaronEffect(int choice1, int cP, struct gameState *post, int hasEstate);
+void checkBaronEffect(int choice1, int cP, struct gameState *post, int hasEstate, int testNum);
 
 int main()
 {
@@ -50,6 +50,7 @@ int main()
 		G.handCount[currentPlayer] = floor(Random() * 11);  // hand count has valid count
 		G.supplyCount[estate] = floor(Random() * 13); // estate supply count is valid and can be 0
 		G.coins = floor(Random() * 1000); // make sure coin count is positive
+		hasEstate = 0;  // reset boolean
 		for (int i = 0; i < G.handCount[currentPlayer]; i++)  // each card in hand is valid and can be estate
 		{
 			G.hand[currentPlayer][i] = floor(Random() * 11);
@@ -59,7 +60,7 @@ int main()
 			}
 		}
 
-		checkBaronEffect(choice1, currentPlayer, &G, hasEstate);
+		checkBaronEffect(choice1, currentPlayer, &G, hasEstate, n);
 	}
 
 	printf("TESTING COMPLETE\n");
@@ -67,7 +68,7 @@ int main()
 }
 
 
-void checkBaronEffect(int choice1, int cP, struct gameState *post, int hasEstate)
+void checkBaronEffect(int choice1, int cP, struct gameState *post, int hasEstate, int testNum)
 {
 	struct gameState pre;
 	memcpy(&pre, post, sizeof(struct gameState));
@@ -93,8 +94,11 @@ void checkBaronEffect(int choice1, int cP, struct gameState *post, int hasEstate
 		pre.supplyCount[estate]--;  // decrease supply count by one
 	}
 
-	MY_ASSERT(result == 0, "Unexpected return value from baronCardEffect");
-	MY_ASSERT(pre.numBuys == post->numBuys, "Invalid number of buys");
-	MY_ASSERT(pre.coins == post->coins, "Invalid number of coins");
-	MY_ASSERT(pre.handCount[cP] == post->handCount[cP], "Invalid hand count");
+	MY_ASSERT(result == 0, "Unexpected return value from baronCardEffect", testNum);
+	MY_ASSERT(pre.numBuys == post->numBuys, "Invalid number of buys", testNum);
+	MY_ASSERT(pre.coins == post->coins, "Invalid number of coins", testNum);
+	MY_ASSERT(pre.discardCount[cP] == post->discardCount[cP], "Invalid number of discards", testNum);
+	MY_ASSERT(pre.discard[cP][pre.discardCount[cP] - 1] == post->discard[cP][post->discardCount[cP] - 1], "Invalid card discarded", testNum);
+	MY_ASSERT(pre.handCount[cP] == post->handCount[cP], "Invalid hand count", testNum);
+	MY_ASSERT(pre.supplyCount[estate] == post->supplyCount[estate], "Invalid supply of Estate cards", testNum);
 }
