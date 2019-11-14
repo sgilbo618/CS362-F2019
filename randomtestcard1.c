@@ -1,0 +1,100 @@
+/*******************************************************************************
+** Name: Samantha Guilbeault
+** Date: 11-07-2019
+** Description: Random tester for function baronCardEffect()
+** Parameters: struct gameState *state, int choice1, int currentPlayer
+** Sources: Lecture notes from Lesson: Random Testing 1
+*******************************************************************************/
+
+#include "dominion.h"
+#include "dominion_helpers.h"
+#include "rngs.h"
+#include <stdio.h>
+#include <math.h>
+
+// source: http://www.dillonbhuff.com/?p=439
+#define MY_ASSERT(x, y) if (!(x)) { printf("   *Assertion Failed - %s\n", y); }
+
+
+void checkBaronEffect(int choice1, int cP, struct gameState *post, int hasEstate);
+
+int main()
+{
+	// init test variables
+	int choice1, currentPlayer, hasEstate = 0;
+
+	// declare the game state
+	struct gameState G;
+
+	// seed rngs
+	SelectStream(2);
+	PutSeed(3);
+
+	printf("Testing baronCardEffect...\n");
+	printf("RANDOM TESTS\n");
+
+	// run test n times
+	for (int n = 0; n < 2000; n++)
+	{
+		// initialize gameState with random values
+		for (int i = 0; i < sizeof(struct gameState); i++)
+		{
+			((char*)&G)[i] = floor(Random() * 256);
+		}
+
+		// refine values that matter to baronCardEffect
+		choice1 = floor(Random() * 2);  // make choice1 either true or false
+		currentPlayer = floor(Random() * 2); // currentPlayer is a valid player number
+		G.deckCount[currentPlayer] = floor(Random() * MAX_DECK);  // deck count has a valid count
+		G.discardCount[currentPlayer] = floor(Random() * MAX_DECK); // discard count has a valid count
+		G.handCount[currentPlayer] = floor(Random() * 11);  // hand count has valid count
+		G.supplyCount[estate] = floor(Random() * 13); // estate supply count is valid and can be 0
+		G.coins = floor(Random() * 1000); // make sure coin count is positive
+		for (int i = 0; i < G.handCount[currentPlayer]; i++)  // each card in hand is valid and can be estate
+		{
+			G.hand[currentPlayer][i] = floor(Random() * 11);
+			if (G.hand[currentPlayer][i] == estate)
+			{
+				hasEstate = 1;
+			}
+		}
+
+		checkBaronEffect(choice1, currentPlayer, &G, hasEstate);
+	}
+
+	printf("TESTING COMPLETE\n");
+	return 0;
+}
+
+
+void checkBaronEffect(int choice1, int cP, struct gameState *post, int hasEstate)
+{
+	struct gameState pre;
+	memcpy(&pre, post, sizeof(struct gameState));
+
+	int result = baronCardEffect(post, choice1, cP);
+
+	pre.numBuys += 1;  // increase number of buys by one
+
+	// discard estate to gain +4 coins
+	if (choice1 > 0 && hasEstate)
+	{
+		pre.coins += 4;  // add 4 coins
+		pre.discard[cP][pre.discardCount[cP]] = estate;  // estate ends up in discard pile
+		pre.discardCount[cP]++;  // increase discard count by one
+		memcpy(pre.hand[cP], post->hand[cP], sizeof(int) * pre.handCount[cP]);  // copy hand because we don't know where to shift hand from
+		pre.handCount[cP]--;  // hand count decreases by one
+	}
+	// no estate, gain estate if there are any left
+	else if (pre.supplyCount[estate] > 0)
+	{
+		pre.discard[cP][pre.discardCount[cP]] = estate;  // add estate to hand
+		pre.discardCount[cP]++;  // increase discard count by one
+		pre.supplyCount[estate]--;  // decrease supply count by one
+	}
+
+	MY_ASSERT(result == 0, "Unexpected return value from baronCardEffect");
+	MY_ASSERT(pre.numBuys == post->numBuys, "Invalid number of buys");
+	MY_ASSERT(pre.coins == post->coins, "Invalid number of coins");
+	MY_ASSERT(pre.handCount[cP] == post->handCount[cP], "Invalid hand count");
+}
