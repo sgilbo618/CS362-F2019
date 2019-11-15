@@ -32,7 +32,7 @@ int main()
 	printf("RANDOM TESTS\n");
 
 	// run test n times
-	for (int n = 0; n < 1000; n++)
+	for (int n = 0; n < 100; n++)
 	{
 		// initialize gameState with random values
 		for (int i = 0; i < sizeof(struct gameState); i++)
