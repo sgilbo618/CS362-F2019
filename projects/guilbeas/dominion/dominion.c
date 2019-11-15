@@ -1249,13 +1249,13 @@ int baronCardEffect(struct gameState * state, int choice1, int currentPlayer)
 	return 0;
 }
 
-int minionCardEffect(struct gameState *state, int choice1, int choice2, int currentPlayer, int handPos) 
+int minionCardEffect(struct gameState *state, int choice1, int currentPlayer, int handPos) 
 {
 	state->numActions++; //+1 action
 
 	discardCard(handPos, currentPlayer, state, 0); //discard card from hand
 
-	if (choice1) //get +2 coins
+	if (choice1 == 1) //get +2 coins
 	{
 		state->coins = state->coins + 2;
 	}
