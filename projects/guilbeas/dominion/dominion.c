@@ -1352,6 +1352,10 @@ int ambassadorCardEffect(struct gameState *state, int choice1, int choice2, int 
 int tributeCardEffect(struct gameState *state, int currentPlayer) 
 {
 	int nextPlayer = whoseTurn(state) + 1;
+	if (nextPlayer > (state->numPlayers - 1)) 
+	{
+		nextPlayer = 0;
+	}
 	int tributeRevealedCards[2] = { -1, -1 };
 
 	//if ((state->discardCount[nextPlayer] + state->deckCount[nextPlayer]) <= 1)
