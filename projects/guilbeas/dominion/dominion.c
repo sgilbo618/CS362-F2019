@@ -870,7 +870,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
         return 0;
 
     case minion:
-		return minionCardEffect(state, choice1, choice2, currentPlayer, handPos);
+		return minionCardEffect(state, choice1, currentPlayer, handPos);
 
     case steward:
         if (choice1 == 1)
