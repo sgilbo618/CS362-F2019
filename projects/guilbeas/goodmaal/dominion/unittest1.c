@@ -25,6 +25,8 @@ int main()
 
 	// init test variables
 	int choice1 = -1;
+	int handPos = -1;
+	int *bonus = 0;
 	int currentPlayer = 0;
 	int coinsBefore = -1;
 	int supplyCountBefore = -1;
@@ -56,13 +58,15 @@ int main()
 	numBuysBefore = G.numBuys;  // track number of buys
 	G.hand[currentPlayer][0] = estate;  // make sure player has an estate to play
 	G.hand[currentPlayer][1] = gold;  // make sure card to replace estate in hand is a card that could not be there yet
+	G.hand[currentPlayer][2] = baron; // make sure baron card in hand
+	handPos = 2;
 	coinsBefore = G.coins;  // track coins before playing estate
 	discardCountBefore = G.discardCount[currentPlayer];  // track discard pile count
 	G.discard[currentPlayer][0] = -1;  // make sure discard pile has no value
 	int handCountBefore = G.handCount[currentPlayer];  // track how many cards in player's hand
 
 	// call function
-	baronCardEffect(&G, choice1, currentPlayer);
+	baronCard(handPos, choice1, currentPlayer, &G, &bonus);
 
 	// 1 buy is added
 	printf("- buy count: %d, expected: %d\n", G.numBuys, numBuysBefore + 1);
@@ -107,6 +111,8 @@ int main()
 	{
 		G.hand[currentPlayer][i] = copper;
 	}
+	G.hand[currentPlayer][2] = baron; // make sure baron card in hand
+	handPos = 2;
 	coinsBefore = G.coins;  // track coins
 	supplyCountBefore = G.supplyCount[estate];  // track supply count for estate
 	discardCountBefore = G.discardCount[currentPlayer];  // track discard pile count
@@ -114,7 +120,7 @@ int main()
 
 
 	// call function
-	baronCardEffect(&G, choice1, currentPlayer);
+	baronCard(handPos, choice1, currentPlayer, &G, &bonus);
 
 	// coins stay the same
 	printf("- coin count: %d, expected: %d\n", G.coins, coinsBefore);
@@ -145,13 +151,15 @@ int main()
 	choice1 = 0;
 	numBuysBefore = G.numBuys;  // track number of buys
 	G.hand[currentPlayer][0] = estate;  // make sure player has an estate
+	G.hand[currentPlayer][2] = baron; // make sure baron card in hand
+	handPos = 2;
 	coinsBefore = G.coins;  // track coin count
 	supplyCountBefore = G.supplyCount[estate];  // track supply count for estate
 	discardCountBefore = G.discardCount[currentPlayer];  // track discard pile count
 	G.discard[currentPlayer][0] = -1;  // make sure discard pile has no value
 
 	// call function
-	baronCardEffect(&G, choice1, currentPlayer);
+	baronCard(handPos, choice1, currentPlayer, &G, &bonus);
 
 	// 1 buy is added
 	printf("- buy count: %d, expected: %d\n", G.numBuys, numBuysBefore + 1);

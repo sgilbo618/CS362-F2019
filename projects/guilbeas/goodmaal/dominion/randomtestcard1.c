@@ -16,13 +16,13 @@
 #define MY_ASSERT(x, y, z) if (!(x)) { printf("   *Assertion Failed: Test %d - %s\n", z, y); }
 
 
-void checkBaronEffect(int choice1, int cP, struct gameState *post, int hasEstate, int testNum);
+void checkBaronEffect(int handPos, int choice1, int cP, struct gameState *post, int *bonus, int hasEstate, int testNum);
 
 int main()
 {
 	// init test variables
-	int choice1, currentPlayer, hasEstate = 0;
-
+	int choice1, currentPlayer, hasEstate = 0, handPos = 0;
+	int *bonus = 0;
 	// declare the game state
 	struct gameState G;
 
@@ -51,7 +51,8 @@ int main()
 		G.supplyCount[estate] = floor(Random() * 13); // estate supply count is valid and can be 0
 		G.coins = floor(Random() * 1000); // make sure coin count is positive
 		hasEstate = 0;  // reset boolean
-		for (int i = 0; i < G.handCount[currentPlayer]; i++)  // each card in hand is valid and can be estate
+		G.hand[currentPlayer][handPos] = baron;  // make sure baron in hand
+		for (int i = 1; i < G.handCount[currentPlayer]; i++)  // each other card in hand is valid and can be estate
 		{
 			G.hand[currentPlayer][i] = floor(Random() * 11);
 			if (G.hand[currentPlayer][i] == estate)
@@ -60,7 +61,7 @@ int main()
 			}
 		}
 
-		checkBaronEffect(choice1, currentPlayer, &G, hasEstate, n);
+		checkBaronEffect(handPos, choice1, currentPlayer, &G, bonus, hasEstate, n);
 	}
 
 	printf("TESTING COMPLETE\n");
@@ -68,12 +69,12 @@ int main()
 }
 
 
-void checkBaronEffect(int choice1, int cP, struct gameState *post, int hasEstate, int testNum)
+void checkBaronEffect(int handPos, int choice1, int cP, struct gameState *post, int *bonus, int hasEstate, int testNum)
 {
 	struct gameState pre;
 	memcpy(&pre, post, sizeof(struct gameState));
 
-	int result = baronCardEffect(post, choice1, cP);
+	int result = baronCard(handPos, choice1, cP, post, bonus);
 
 	pre.numBuys += 1;  // increase number of buys by one
 

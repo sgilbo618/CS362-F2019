@@ -755,7 +755,7 @@ int baronCard(int handPos, int choice1, int currentPlayer, struct gameState* sta
             }
         }
 
-        discardCard(handPos, currentPlayer, state, 0);  // Piazza Post - Tim Palecek
+        //discardCard(handPos, currentPlayer, state, 0);  // Piazza Post - Tim Palecek
 
         return 0;
 }
