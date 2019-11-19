@@ -66,7 +66,7 @@ int main()
 	int handCountBefore = G.handCount[currentPlayer];  // track how many cards in player's hand
 
 	// call function
-	baronCard(handPos, choice1, currentPlayer, &G, &bonus);
+	baronCard(handPos, choice1, currentPlayer, &G, bonus);
 
 	// 1 buy is added
 	printf("- buy count: %d, expected: %d\n", G.numBuys, numBuysBefore + 1);
@@ -120,7 +120,7 @@ int main()
 
 
 	// call function
-	baronCard(handPos, choice1, currentPlayer, &G, &bonus);
+	baronCard(handPos, choice1, currentPlayer, &G, bonus);
 
 	// coins stay the same
 	printf("- coin count: %d, expected: %d\n", G.coins, coinsBefore);
@@ -159,7 +159,7 @@ int main()
 	G.discard[currentPlayer][0] = -1;  // make sure discard pile has no value
 
 	// call function
-	baronCard(handPos, choice1, currentPlayer, &G, &bonus);
+	baronCard(handPos, choice1, currentPlayer, &G, bonus);
 
 	// 1 buy is added
 	printf("- buy count: %d, expected: %d\n", G.numBuys, numBuysBefore + 1);
