@@ -11,6 +11,7 @@
 #include "rngs.h"
 #include <stdio.h>
 #include <math.h>
+#include <string.h>
 
 // source: http://www.dillonbhuff.com/?p=439
 #define MY_ASSERT(x, y, z) if (!(x)) { printf("   *Assertion Failed: Test %d - %s\n", z, y); }
