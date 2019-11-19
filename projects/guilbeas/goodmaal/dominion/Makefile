@@ -25,7 +25,7 @@ randomtest1: randomtestcard1.c dominion.o rngs.o
 	gcc -o randomtest1 -g randomtestcard1.c dominion.o rngs.o $(CFLAGS)
 
 unittest1: unittest1.c dominion.o rngs.o
-	gcc -o unittest1.c -g unittest1.c dominion.o rngs.o $(CFLAGS)
+	gcc -o unittest1 -g unittest1.c dominion.o rngs.o $(CFLAGS)
 
 player: player.c interface.o
 	gcc -o player player.c -g  dominion.o rngs.o interface.o $(CFLAGS)
