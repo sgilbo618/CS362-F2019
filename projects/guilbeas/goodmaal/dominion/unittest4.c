@@ -25,6 +25,9 @@ int main()
 	int numPlayer = 2;
 
 	// init test variables
+	int handPos = 0;
+	int bonus = 0;
+	int tributeRevealedCards[2] = { -1, -1 };
 	int currentPlayer = 0;
 	int nextPlayer = 1;
 	int playedCardsBefore = -1;
@@ -57,13 +60,13 @@ int main()
 	// set variables for this test
 	G.deckCount[nextPlayer] = 0;  // make sure next player deck count is empty
 	G.discardCount[nextPlayer] = 0; // make sure next player discard count is empty
-	playedCardsBefore = G.playedCardCount;  // track played card pile
+	playedCardsBefore = G.trashedCardCount;  // track played card pile
 	coinsBefore = G.coins;  // track coins for this turn
 	handCountBefore = G.handCount[currentPlayer];  // track hand count of current player
 	actionsBefore = G.numActions;  // track actions for this turn
 
 	// call function
-	tributeCardEffect(&G, currentPlayer);
+	tributeCard(handPos, currentPlayer, nextPlayer, tributeRevealedCards, &G, &bonus);
 
 	// next player's card counts stay at 0
 	printf("- next player deck count: %d, expected: 0\n", G.deckCount[nextPlayer]);
@@ -72,8 +75,8 @@ int main()
 	MY_ASSERT(G.discardCount[nextPlayer] == 0);
 
 	// no cards are played
-	printf("- played cards: %d, expected: %d\n", G.playedCardCount, playedCardsBefore);
-	MY_ASSERT(G.playedCardCount == playedCardsBefore);
+	printf("- played cards: %d, expected: %d\n", G.trashedCardCount, playedCardsBefore);
+	MY_ASSERT(G.trashedCardCount == playedCardsBefore);
 
 	// current player doesn't gain anything
 	printf("- coins: %d, expected: %d\n", G.coins, coinsBefore);
@@ -103,7 +106,7 @@ int main()
 	actionsBefore = G.numActions;  // track cp actions
 
 	// call function
-	tributeCardEffect(&G, currentPlayer);
+	tributeCard(handPos, currentPlayer, nextPlayer, tributeRevealedCards, &G, &bonus);
 
 	// next player's deck count decreases by 1 card
 	printf("- next player deck count: %d, expected: %d\n", G.deckCount[nextPlayer], npDeckCountBefore - 1);
@@ -143,7 +146,7 @@ int main()
 	actionsBefore = G.numActions;  // track cp actions
 
 	// call function
-	tributeCardEffect(&G, currentPlayer);
+	tributeCard(handPos, currentPlayer, nextPlayer, tributeRevealedCards, &G, &bonus);
 
 	// next player discard count ends up the same - two are taken and returned
 	printf("- next player discard count: %d, expected: %d\n", G.discardCount[nextPlayer], npDiscardCountBefore);
@@ -181,7 +184,7 @@ int main()
 	actionsBefore = G.numActions;  // track cp actions
 
 	// call function
-	tributeCardEffect(&G, currentPlayer);
+	tributeCard(handPos, currentPlayer, nextPlayer, tributeRevealedCards, &G, &bonus);
 
 	// next player uses 2 cards from deck
 	printf("- next player deck count: %d, expected: %d\n", G.deckCount[nextPlayer], npDeckCountBefore - 2);

@@ -70,7 +70,7 @@ int main()
 
 
 	// call function
-	ambassadorCardEffect(&G, choice1, choice2, handPos, currentPlayer);
+	ambassadorCard(handPos, currentPlayer, choice1, choice2, &G);
 
 	// supply count of choosen card goes down by number of other players
 	printf("- smithy supply: %d, expected: %d\n", G.supplyCount[revealedCard], supplyCountBefore - (numPlayer - 1));
@@ -118,7 +118,7 @@ int main()
 
 
 	// call function
-	ambassadorCardEffect(&G, choice1, choice2, handPos, currentPlayer);
+	ambassadorCard(handPos, currentPlayer, choice1, choice2, &G);
 
 	// supply count of choosen card will be +2 - number of other players
 	printf("- smithy supply: %d, expected: %d\n", G.supplyCount[revealedCard], supplyCountBefore + choice2 - (numPlayer - 1));
