@@ -720,8 +720,8 @@ int baronCard(int handPos, int choice1, int currentPlayer, struct gameState* sta
                 }
 
                else if (state->hand[currentPlayer][p] == estate) { //Found an estate card!
-                    state->coins += 4;//Add 4 coins to the amount of coins
-                    //*bonus = 4; // Piazza Post - adams Rosales
+                    //state->coins += 4;//Add 4 coins to the amount of coins
+                    *bonus = 4; // Piazza Post - adams Rosales
 
                     state->discard[currentPlayer][state->discardCount[currentPlayer]] = state->hand[currentPlayer][p];
                     state->discardCount[currentPlayer]++;
