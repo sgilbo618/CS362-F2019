@@ -17,12 +17,15 @@
 #define MY_ASSERT(x, y, z) if (!(x)) { printf("   *Assertion Failed: Test %d - %s\n", z, y); }
 
 
-void checkTributeEffect(int cP, int nP, struct gameState *post, int testNum);
+void checkTributeEffect(int cP, int nP, struct gameState *post, int handPos, int *bonus, int tributeRevealedCards[], int testNum);
 
 int main()
 {
 	// init test variables
 	int currentPlayer, nextPlayer;
+	int handPos = 0;
+	int bonus = 0;
+	int tributeRevealedCards[2] = { -1, -1 };
 
 	// declare the game state
 	struct gameState G;
@@ -63,11 +66,12 @@ int main()
 		{
 			G.deck[nextPlayer][i] = floor(Random() * 26);  // next player needs valid cards in deck pile
 		}
-		G.playedCardCount = floor(Random() * 100);  // make sure played card count is valid
+		G.trashedCardCount = floor(Random() * 100);  // make sure played card count is valid
 		G.coins = floor(Random() * 1000);  // make sure coins is positive
 		G.numActions = floor(Random() * 1000);  // make sure actions is positive
+		G.hand[currentPlayer][handPos] = tribute;  // make sure player has tribute in hand
 
-		checkTributeEffect(currentPlayer, nextPlayer, &G, n);
+		checkTributeEffect(currentPlayer, nextPlayer, &G, handPos, &bonus, tributeRevealedCards, n);
 	}
 
 	printf("TESTING COMPLETE\n");
@@ -75,12 +79,12 @@ int main()
 }
 
 
-void checkTributeEffect(int cP, int nP, struct gameState *post, int testNum)
+void checkTributeEffect(int cP, int nP, struct gameState *post, int handPos, int *bonus, int tributeRevealedCards[], int testNum)
 {
 	struct gameState pre;
 	memcpy(&pre, post, sizeof(struct gameState));
 
-	int result = tributeCardEffect(post, cP);
+	int result = tributeCard(handPos, cP, nP, tributeRevealedCards, post, bonus);
 
 	int revealedCards[2] = { -1, -1 };
 	if (pre.discardCount[nP] + pre.deckCount[nP] <= 1)  // next player has 1 or less cards to reveal
