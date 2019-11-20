@@ -62,7 +62,7 @@ int main()
 	choice2 = 0;
 	G.hand[currentPlayer][handPos] = minion;  // make sure minion card is being played
 	actionsBefore = G.numActions;  // track number of actions
-	playedCardCountBefore = G.playedCardCount;  // track number of cards played
+	playedCardCountBefore = G.trashedCardCount;  // track number of cards played
 	coinsBefore = G.coins;  // track coins before
 	discardCountBefore = G.discardCount[currentPlayer];  // track number of cards in discard pile
 	for (int i = 0; i < 5; i++)
