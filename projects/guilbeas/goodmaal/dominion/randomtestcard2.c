@@ -17,12 +17,13 @@
 #define MY_ASSERT(x, y, z) if (!(x)) { printf("   *Assertion Failed: Test %d - %s\n", z, y); }
 
 
-void checkMinionEffect(int choice1, int cP, struct gameState *post, int handPos, int testNum);
+void checkMinionEffect(int choice1, int choice2, int cP, struct gameState *post, int handPos, int *bonus, int testNum);
 
 int main()
 {
 	// init test variables
-	int choice1, currentPlayer, handPos;
+	int choice1, choice2, currentPlayer, handPos;
+	int bonus = 0;
 	struct gameState G;
 
 	// seed rngs
@@ -42,7 +43,8 @@ int main()
 		}
 
 		// refine values that matter to baronCardEffect
-		choice1 = floor(Random() * 2) + 1;  // make choice1 either 1 or 2
+		choice1 = floor(Random() * 2);  // make choice1 either 0 or 1
+		choice2 = floor(Random() * 2);  // make choice2 either 0 or 1
 		G.numPlayers = floor(Random() * MAX_PLAYERS) + 1;  // make sure valid number of players
 		currentPlayer = floor(Random() * G.numPlayers); // currentPlayer is a valid player number based on how many players there are
 		for (int i = 0; i < G.numPlayers; i++)  // every player needs a valid hand, discard, deck count
@@ -54,8 +56,9 @@ int main()
 		handPos = floor(Random() * G.handCount[currentPlayer]);  // get a random position in the hand
 		G.hand[currentPlayer][handPos] = minion;  // make sure Minion card is in the correct position
 		G.coins = floor(Random() * 1000);  // make sure coins is positive
+		G.trashedCardCount = 0;  // make sure valid number of trashed cards
 
-		checkMinionEffect(choice1, currentPlayer, &G, handPos, n);
+		checkMinionEffect(choice1, choice2, currentPlayer, &G, handPos, &bonus, n);
 	}
 
 	printf("TESTING COMPLETE\n\n");
@@ -63,12 +66,12 @@ int main()
 }
 
 
-void checkMinionEffect(int choice1, int cP, struct gameState *post, int handPos, int testNum)
+void checkMinionEffect(int choice1, int choice2, int cP, struct gameState *post, int handPos, int *bonus, int testNum)
 {
 	struct gameState pre;
 	memcpy(&pre, post, sizeof(struct gameState));
 
-	int result = minionCardEffect(post, choice1, cP, handPos);
+	int result = minionCard(handPos, cP, choice1, choice2, post, bonus);
 
 	pre.numActions += 1;  // increment actions no matter what choice is
 	pre.discard[cP][pre.discardCount[cP]] = minion;  // discard Minion

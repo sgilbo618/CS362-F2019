@@ -24,6 +24,7 @@ int main()
 	int numPlayer = 3;
 
 	// init test variables
+	int bonus = 0;
 	int currentPlayer = 0;
 	int secondPlayer = 1;
 	int thirdPlayer = 2;
@@ -74,17 +75,17 @@ int main()
 	}
 
 	// call function
-	minionCardEffect(&G, choice1, choice2, currentPlayer, handPos);
+	minionCard(handPos, currentPlayer, choice1, choice2, &G, &bonus);
 
 	// actions increase by one
 	printf("- actions count: %d, expected: %d\n", G.numActions, actionsBefore + 1);
 	MY_ASSERT(G.numActions == actionsBefore + 1);
 
 	// exactly one minion card played
-	printf("- cards played: %d, expected: %d\n", G.playedCardCount, playedCardCountBefore + 1);
-	MY_ASSERT(G.playedCardCount == playedCardCountBefore + 1);
-	printf("- card played: %d, expected: %d\n", G.playedCards[G.playedCardCount - 1], minion);
-	MY_ASSERT(G.playedCards[G.playedCardCount - 1] == minion);
+	printf("- cards played: %d, expected: %d\n", G.trashedCardCount, playedCardCountBefore + 1);
+	MY_ASSERT(G.trashedCardCount == playedCardCountBefore + 1);
+	printf("- card played: %d, expected: %d\n", G.trash[G.trashedCardCount - 1], minion);
+	MY_ASSERT(G.trash[G.trashedCardCount - 1] == minion);
 
 	// exactly +2 coins gained
 	printf("- coin count: %d, expected: %d\n", G.coins, coinsBefore + 2);
@@ -127,7 +128,7 @@ int main()
 	}
 
 	// call function
-	minionCardEffect(&G, choice1, choice2, currentPlayer, handPos);
+	minionCard(handPos, currentPlayer, choice1, choice2, &G, &bonus);
 
 	// coins stay the same
 	printf("- coin count: %d, expected: %d\n", G.coins, coinsBefore);
@@ -166,7 +167,7 @@ int main()
 	handCountBefore = G.handCount[currentPlayer];  // track hand count
 
 	// call function
-	minionCardEffect(&G, choice1, choice2, currentPlayer, handPos);
+	minionCard(handPos, currentPlayer, choice1, choice2, &G, &bonus);
 
 	// actions increase by one
 	printf("- actions count: %d, expected: %d\n", G.numActions, actionsBefore + 1);
