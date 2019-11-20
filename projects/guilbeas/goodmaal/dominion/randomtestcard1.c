@@ -23,7 +23,7 @@ int main()
 {
 	// init test variables
 	int choice1, currentPlayer, hasEstate = 0, handPos = 0;
-	int *bonus = 0;
+	int bonus = 0;
 	// declare the game state
 	struct gameState G;
 
@@ -62,7 +62,7 @@ int main()
 			}
 		}
 
-		checkBaronEffect(handPos, choice1, currentPlayer, &G, bonus, hasEstate, n);
+		checkBaronEffect(handPos, choice1, currentPlayer, &G, &bonus, hasEstate, n);
 	}
 
 	printf("TESTING COMPLETE\n");
