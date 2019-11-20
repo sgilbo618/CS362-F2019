@@ -66,7 +66,7 @@ int main()
 	deckCountBefore = G.deckCount[currentPlayer];  // track deck count
 
 	// call function
-	mineCardEffect(&G, currentPlayer, choice1, choice2, handPos);
+	mineCard(handPos, currentPlayer, choice1, choice2, &G);
 
 	// hand count is one less than before - minus copper, minus mine, plus silver
 	printf("- hand count: %d, expected: %d\n", G.handCount[currentPlayer], handCountBefore - 1);
@@ -105,7 +105,7 @@ int main()
 	deckCountBefore = G.deckCount[currentPlayer];  // track deck coun
 
 	// call function
-	errorCheck = mineCardEffect(&G, currentPlayer, choice1, choice2, handPos);
+	errorCheck = mineCard(handPos, currentPlayer, choice1, choice2, &G);
 
 	// function short curcuits because choice1 is not a treasure
 	printf("- error check: %d, expected: -1\n", errorCheck);
@@ -139,7 +139,7 @@ int main()
 	deckCountBefore = G.deckCount[currentPlayer];  // track deck coun
 
 	// call function
-	errorCheck = mineCardEffect(&G, currentPlayer, choice1, choice2, handPos);
+	errorCheck = mineCard(handPos, currentPlayer, choice1, choice2, &G);
 
 	// function short curcuits because choice2 is not a treasure
 	printf("- error check: %d, expected: -1\n", errorCheck);
@@ -174,7 +174,7 @@ int main()
 	deckCountBefore = G.deckCount[currentPlayer];  // track deck coun
 
 	// call function
-	errorCheck = mineCardEffect(&G, currentPlayer, choice1, choice2, handPos);
+	errorCheck = mineCard(handPos, currentPlayer, choice1, choice2, &G);
 
 	// function short curcuits because choice2 is not a treasure
 	printf("- error check: %d, expected: -1\n", errorCheck);
